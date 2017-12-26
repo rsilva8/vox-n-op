@@ -46,10 +46,6 @@ c2(1:N) = num2cell(ceil(szk/2));%,1,ones(1,N));
 offsets = sub2ind(sz,c1{:}) - sub2ind(sz,c2{:});
 L = ceil(length(offsets(:))/2);
 
-% Initialize map as an empty sparse matrix
-V = prod(sz);
-map = sparse(V,V);
-
 % Find all connected element pairs by adding the 
 nhood = bsxfun(@plus, core_indexes, offsets(:)');
 
@@ -60,10 +56,15 @@ center = nhood(:,L);
 
 % Process core elements:
 % Mark index pairs in lower diagonal part of map
+% Initialize map as an empty sparse matrix
+V = prod(sz);
 long_center = repmat(center,1,size(neighbors_up,2));
-map(sub2ind(size(map),long_center(:),neighbors_up(:))) = true;
+ii = [long_center(:); neighbors_down(:)];
 long_center = repmat(center,1,size(neighbors_down,2));
-map(sub2ind(size(map),neighbors_down(:),long_center(:))) = true;
+jj = [neighbors_up(:); long_center(:)];
+vv = true(size(ii));
+pairs = unique([ii jj vv],'rows');
+map = sparse(pairs(:,1),pairs(:,2),pairs(:,3),V,V);
 
 end
 
