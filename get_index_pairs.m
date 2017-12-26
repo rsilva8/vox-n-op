@@ -47,7 +47,7 @@ offsets = sub2ind(sz,c1{:}) - sub2ind(sz,c2{:});
 L = ceil(length(offsets(:))/2);
 
 % Initialize map as an empty sparse matrix
-V = sum(mask(:));
+V = prod(sz);
 map = sparse(V,V);
 
 % Find all connected element pairs by adding the 
