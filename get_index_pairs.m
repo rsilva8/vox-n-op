@@ -60,10 +60,10 @@ center = nhood(:,L);
 
 % Process core elements:
 % Mark index pairs in lower diagonal part of map
-for ll = 1:length(center)
-    map(center(ll),neighbors_up(ll,:)) = true;
-    map(neighbors_down(ll,:),center(ll)) = true;
-end
+long_center = repmat(center,1,size(neighbors_up,2));
+map(sub2ind(size(map),long_center(:),neighbors_up(:))) = true;
+long_center = repmat(center,1,size(neighbors_down,2));
+map(sub2ind(size(map),neighbors_down(:),long_center(:))) = true;
 
 end
 
